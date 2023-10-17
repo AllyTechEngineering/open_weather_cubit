@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'pages/home_page.dart';
 
 void main() async {
-  await dotenv.load(fileName: '.env');
+  await dotenv.load(fileName: '.env'); // how to load the .env file with the API key
   runApp(const MyApp());
 }
 
