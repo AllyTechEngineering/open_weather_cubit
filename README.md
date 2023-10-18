@@ -1,16 +1,15 @@
 # open_weather_cubit
 
-A new Flutter project.
+This project uses BLoC and this implementation uses cubits and states with a repository
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Packages Used
+- equatable: ^2.0.5
+    - A Dart package that helps to implement value based equality without needing to explicitly override == and hashCode.
+- flutter_bloc: ^8.1.2
+    - Flutter Widgets that make it easy to implement the BLoC (Business Logic Component) design pattern. Built to be used with the bloc state management package.
+- flutter_dotenv: ^5.1.0
+    - Easily configure any flutter application with global variables using a `.env` file.
+- http: ^1.1.0
+    - A composable, multi-platform, Future-based API for HTTP requests.
+- recase: ^4.1.0
+    - Changes the case of the input text to the desire case convention.

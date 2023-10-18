@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_weather_cubit/cubits/weather/weather_cubit.dart';
+import 'package:open_weather_cubit/repositories/weather_repository.dart';
+import 'package:open_weather_cubit/services/weather_api_services.dart';
+import 'package:http/http.dart' as http;
 import 'pages/home_page.dart';
 
 void main() async {
-  await dotenv.load(fileName: '.env'); // how to load the .env file with the API key
+  await dotenv.load(
+      fileName: '.env'); // how to load the .env file with the API key
   runApp(const MyApp());
 }
 
@@ -13,13 +18,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Weather App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return RepositoryProvider(
+      create: (context) => WeatherRepository(
+        weatherApiServices: WeatherApiServices(
+          httpClient: http.Client(),
+        ),
       ),
-      home: const HomePage(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<WeatherCubit>(
+            create: (context) => WeatherCubit(
+              weatherRepository: context.read<WeatherRepository>(),
+            ),
+          ),
+        ],
+        child: MaterialApp(
+          title: 'Weather App',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: const HomePage(),
+        ),
+      ),
     );
   }
 }

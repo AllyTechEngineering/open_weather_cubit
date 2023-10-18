@@ -1,5 +1,5 @@
 import 'package:open_weather_cubit/exceptions/weather_exception.dart';
-import 'package:open_weather_cubit/models/customer_error.dart';
+import 'package:open_weather_cubit/models/custom_error.dart';
 import 'package:open_weather_cubit/models/direct_geocoding.dart';
 import 'package:open_weather_cubit/models/weather.dart';
 import 'package:open_weather_cubit/services/weather_api_services.dart';
@@ -26,7 +26,7 @@ class WeatherRepository {
         country: directGeocoding.country,
       );
 
-      print('weather: $weather');
+      // print('weather: $weather');
 
       return weather;
     } on WeatherException catch (e) {
