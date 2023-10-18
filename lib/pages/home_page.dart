@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:open_weather_cubit/constants/constants.dart';
+import 'package:open_weather_cubit/cubits/temp_settings/temp_settings_cubit.dart';
 import 'package:open_weather_cubit/cubits/weather/weather_cubit.dart';
 import 'package:open_weather_cubit/pages/search_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_weather_cubit/pages/settings_page.dart';
+import 'package:open_weather_cubit/widgets/error_dialog.dart';
+import 'package:recase/recase.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,65 +18,40 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? _city;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Weather'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () async {
-              _city = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return SearchPage();
-                  },
-                ),
-              );
-              print('city: $_city');
-              if (_city != null) {
-                context.read<WeatherCubit>().fetchWeather(_city!);
-              }
-            },
-          )
-        ],
-      ),
-      body: _showWeather(),
-    );
-  } //Widget build
+  String showTemperature(double temperature) {
+    final tempUnit = context.watch<TempSettingsCubit>().state.tempUnit;
+    if (tempUnit == TempUnit.fahrenheit) {
+      return ((temperature * 9 / 5) + 32).toStringAsFixed(2) + '℉';
+    }
+    return temperature.toStringAsFixed(2) + '℃';
+  }
 
-  /// Create _showWeather() method that returns widgets
-  ///
-  /// See Video at 65. HomePage widget 1 - initial, loading, error
-  ///
-  /// If there is an error a dialog will be displayed otherwise a widget will be displayed
-  ///
-  /// Need BlocListener and BlocBuilder for this method but we can use BlocConsumer to simplify the code. We will return BlocConsumer
-  ///
-  Widget _showWeather() {
+  Widget showIcon(String icon) {
+    return FadeInImage.assetNetwork(
+      placeholder: 'assets/images/loading.gif',
+      image: 'http://$kIconHost/img/wn/$icon@4x.png',
+      height: 96,
+      width: 96,
+    );
+  }
+
+  Widget formatText(String description) {
+    final formattedString = description.titleCase;
+    return Text(
+      formattedString,
+      style: const TextStyle(fontSize: 24.0),
+      textAlign: TextAlign.center,
+    );
+  }
+
+  Widget showWeather() {
     return BlocConsumer<WeatherCubit, WeatherState>(
       listener: (context, state) {
-        /// In the case of an error we will display an AlertDialog.
-        ///
-        /// '''return AlertDialog(
-        /// content: Text(state.error.errMsg),'''
-        ///
-        /// listener callback receives BuildContext and WeatherState as arguments.
+        /// see error_dialog.dart for details about the errorDialog method
         ///
         if (state.status == WeatherStatus.error) {
-          showDialog(
-            context: context,
-            builder: (context) {
-              /// Displays errMessage property of state.error from the builder callback.
-              ///
-              return AlertDialog(
-                content: Text(state.error.errMsg),
-              );
-            },
-          );
-        }
+          errorDialog(context, state.error.errMsg);
+        } // end of if
       },
 
       /// The builder recieves BuildContext and WeatherState as arguments.
@@ -115,13 +95,134 @@ class _HomePageState extends State<HomePage> {
 
         ///State: loaded normally
         ///
-        return Center(
-          child: Text(
-            state.weather.name,
-            style: TextStyle(fontSize: 18.0),
-          ),
+        return ListView(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 6,
+            ),
+            Text(
+              state.weather.name,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 40.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  // Create a TimeOfDay instance.
+                  // state.weather.lastUpdated is the argument.
+                  TimeOfDay.fromDateTime(state.weather.lastUpdated)
+                      .format(context),
+                  style: TextStyle(fontSize: 18.0),
+                ),
+                const SizedBox(width: 20.0),
+                Text(
+                  '${state.weather.country}',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+              ],
+            ),
+            const SizedBox(height: 60.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  showTemperature(state.weather.temp),
+                  style: TextStyle(
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(width: 10.0),
+                Column(
+                  children: [
+                    Text(
+                      showTemperature(state.weather.tempMax),
+                      style: TextStyle(
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    const SizedBox(width: 10.0),
+                    Text(
+                      showTemperature(state.weather.tempMin),
+                      style: TextStyle(
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            SizedBox(
+              height: 40.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Spacer(),
+                showIcon(state.weather.icon),
+                // Use the Wrap with Widget tool to wrap this with an Expanded Widget.
+                // this was the original line of code before wrapping:
+                // formatText(state.weather.description),
+                // After wrapping with Expanded and then manually entered flex and value the line of code becomes this:
+                Expanded(
+                  flex: 3,
+                  child: formatText(state.weather.description),
+                ),
+                Spacer(),
+              ],
+            ),
+          ],
         );
       },
     );
-  }
+  } //Widget showWeather()
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Weather'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () async {
+              _city = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return SearchPage();
+                  },
+                ),
+              );
+              print('city: $_city');
+              if (_city != null) {
+                context.read<WeatherCubit>().fetchWeather(_city!);
+              }
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const SettingsPage();
+                  },
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+      body: showWeather(),
+    );
+  } //Widget build
 } //class _HomePageState

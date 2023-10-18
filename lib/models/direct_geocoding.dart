@@ -54,8 +54,8 @@ class DirectGeocoding extends Equatable {
   @override
   List<Object> get props => [name, lat, lon, country];
 
-  // @override
-  // String toString() {
-  //   return 'DirectGeocoding(name: $name, lat: $lat, lon: $lon, country: $country)';
-  // }
+  @override
+  String toString() {
+    return 'DirectGeocoding(name: $name, lat: $lat, lon: $lon, country: $country)';
+  }
 } //class DirectGeocoding
