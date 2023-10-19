@@ -30,7 +30,7 @@ class WeatherApiServices {
     /// try catch error
     try {
       final http.Response response = await httpClient.get(uri);
-      print('This is the uri: $uri');
+      // print('This is the uri: $uri');
       if (response.statusCode != 200) {
         throw httpErrorHandler(response);
       }

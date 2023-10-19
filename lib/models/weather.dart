@@ -1,8 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-/// This is the backbone of the app and the second class created.
-/// the variables store the results of the API call using lat and lon for a given city
-///
+/// Models are used to determine the structure of the data - API responses.
+/// Models declare variables, data types and can have methods to add some functionality to the data.
 
 class Weather extends Equatable {
   final String description;
@@ -13,6 +12,7 @@ class Weather extends Equatable {
   final String name;
   final String country;
   final DateTime lastUpdated;
+  /// Constructors are used to initialize the object of the class.
   Weather({
     required this.description,
     required this.icon,

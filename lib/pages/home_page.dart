@@ -47,8 +47,10 @@ class _HomePageState extends State<HomePage> {
   Widget showWeather() {
     return BlocConsumer<WeatherCubit, WeatherState>(
       listener: (context, state) {
-        /// see error_dialog.dart for details about the errorDialog method
-        ///
+        // see error_dialog.dart for details about the errorDialog method
+        //  final WeatherStatus status; is in WeatherState
+        //  final CustomError error; is in WeatherState
+        //
         if (state.status == WeatherStatus.error) {
           errorDialog(context, state.error.errMsg);
         } // end of if
@@ -63,8 +65,8 @@ class _HomePageState extends State<HomePage> {
       /// For the rest of the cases (states?) the data is loaded normally. Display the weather data.
       ///
       builder: (context, state) {
-        ///State: initial
-        ///
+        //State: initial
+        // final WeatherStatus status; is in WeatherState
         if (state.status == WeatherStatus.initial) {
           return const Center(
             child: Text(
@@ -201,7 +203,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
               );
-              print('city: $_city');
+              // print('city: $_city');
               if (_city != null) {
                 context.read<WeatherCubit>().fetchWeather(_city!);
               }

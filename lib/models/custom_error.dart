@@ -1,5 +1,8 @@
 import 'package:equatable/equatable.dart';
 
+/// Models are used to determine the structure of the data - API responses.
+/// Models declare variables, data types and can have methods to add some functionality to the data.
+///
 /// Provides a custom error model for errors that have occured in the weather app
 
 class CustomError extends Equatable {

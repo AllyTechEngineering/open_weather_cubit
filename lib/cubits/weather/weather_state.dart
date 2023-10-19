@@ -1,5 +1,8 @@
 part of 'weather_cubit.dart';
 
+/// Enumerated types, often called enumerations or enums, are a special kind of class used to represent a fixed number of constant values.
+/// Access the enumerated values like any other static variable:
+
 enum WeatherStatus {
   initial,
   loading,
@@ -20,6 +23,7 @@ class WeatherState extends Equatable {
   /// factory constructor for weather_state.dart
   factory WeatherState.initial() {
     return WeatherState(
+      // initial is in the enum in WeatherState
         status: WeatherStatus.initial,
         weather: Weather.initial(),
         error: CustomError());
@@ -39,4 +43,6 @@ class WeatherState extends Equatable {
       error: error ?? this.error,
     );
   }
+
+  
 } //class WeatherState

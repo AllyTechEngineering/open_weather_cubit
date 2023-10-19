@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-/// This is the backbone of the app and the first thing created.
-/// openweather api is deprecating looking up weather by name/country so we need two API calls.
+/// Models are used to determine the structure of the data - API responses.
+/// Models declare variables, data types and can have methods to add some functionality to the data.
 ///
 /// First call is to get the lat and lon of the city.
 /// Second is to get the data for that city and not use the city and country - use lat and lon.
@@ -9,16 +9,16 @@ import 'package:equatable/equatable.dart';
 /// We will not use the openweather api city and country?
 /// Based on the first API call and uses name, lat, lon and country.
 /// We need this to get the lat and lon of the city we are looking for.
-///  
-/// 
+///
+///
 /// * Factory constructor: used to decode the JSON into a list of dynamic type.
 ///
 /// * We only need the first JSON so this sets that up.
-/// * ... 
+/// * ...
 /// '''dart final Map<String, dynamic> data = json[0];'''
 ///
 /// * Create a DirectGeocoding instance and return it.
-/// 
+///
 /// '''dart return DirectGeocoding(
 /// name: data['name'],
 /// lat: data['lat'],
@@ -38,7 +38,7 @@ class DirectGeocoding extends Equatable {
     required this.country,
   });
 
- /// This is the factory constructor mentioned above.
+  /// This is the factory constructor mentioned above.
   factory DirectGeocoding.fromJson(List<dynamic> json) {
     /// We only need the first JSON so this sets that up
     final Map<String, dynamic> data = json[0];
@@ -58,4 +58,6 @@ class DirectGeocoding extends Equatable {
   String toString() {
     return 'DirectGeocoding(name: $name, lat: $lat, lon: $lon, country: $country)';
   }
+  
+
 } //class DirectGeocoding
