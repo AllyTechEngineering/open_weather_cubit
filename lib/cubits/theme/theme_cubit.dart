@@ -10,7 +10,7 @@ part 'theme_state.dart';
 /// # ThemeCubit
 /// * This cubit needs to listen to the WeatherCubit's state change
 /// * Needs an instance of WeatherCubit
-/// * WeatherCubit exposes a stream that can recieve real time updates of WeatherState.
+
 
 class ThemeCubit extends Cubit<ThemeState> {
   late final StreamSubscription weatherSubscription;

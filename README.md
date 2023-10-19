@@ -1,6 +1,37 @@
 # open_weather_cubit
 
-This project uses BLoC and this implementation uses cubits and states with a repository
+This project uses BLoC and this implementation uses cubits with a repository.
+Any Cubit to Cubit state communication was handled using streams.
+
+## BLoC Cubits Used
+- TempSettingsCubit used to change for C to F.
+- ThemeCubit listens to WeatherCubit and change theme based on location weather.
+- WeatherCubit works with WeatherRepository to handle data from API call to openWeather.
+
+## BLoC Repository Used
+- WeatherRepository
+
+##  Flutter BLoC Used
+- RepositoryProvider for depenency injection.
+- MultiBlocProvider to avoid nesting BlocProviders
+- BlocProvider<WeatherCubit>
+    - context.read<WeatherRepository> used to provide WeatherRepository to WeatherCubit.
+- BlocProvider<TempSettingsCubit>
+- BlocProvider<ThemeCubit>
+    - context.read<WeatherCubit> used to provide WeatherCubit to ThemeCubit.
+
+## Models Used
+openWeather has deprecated using City and Country for weather look up and need lat and lon instead.
+- Weather used to model the weather data for the UI.
+- DirectGeocoding used to model the data for the lat and lon call to get city data.
+- CustomError used to model the error messages.
+
+## Services Used
+- http_error_handler.dart
+- WeatherApiServices (weather_api_services.dart)
+
+## Other
+- Used the flutter_dotenv package to hide the API key in a .env file and used gitignore to ensure the file was not made public on GitHub.
 
 ## Packages Used
 - equatable: ^2.0.5
