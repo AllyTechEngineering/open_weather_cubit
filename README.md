@@ -3,6 +3,21 @@
 This project uses BLoC and this implementation uses cubits with a repository.
 Any Cubit to Cubit state communication was handled using streams.
 
+- StreamSubscription
+    - Pros
+        - Organzied, structured and easy to read and maintain.
+        - TBD
+    - Cons
+        - It may get cluttered really fast and hard to scale on large apps.
+        - Most remember to close StreamSubscriptions to avoid memory leaks. 
+- BlocListener
+    - Pros
+        - Takes care of SteamSubscriptions internally.
+        - Automatically closes SteamSubscriptions.
+    - Cons
+        - UI will get cluttered if many BlocListeners are needed.
+        TBD
+
 ## BLoC Cubits Used
 - TempSettingsCubit used to change for C to F.
 - ThemeCubit listens to WeatherCubit and change theme based on location weather.

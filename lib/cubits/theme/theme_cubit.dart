@@ -24,10 +24,10 @@ class ThemeCubit extends Cubit<ThemeState> {
         weatherCubit.stream.listen((WeatherState weatherState) {
       print('This is weatherState.weather.temp: ${weatherState.weather.temp}');
       if (weatherState.weather.temp > kWarmOrNot) {
-        print('Entered into if where temp is > 20');
+        // print('Entered into if where temp is > 20');
         emit(state.copyWith(apptheme: AppTheme.light));
       } else {
-        print('Entered into else where temp is < 20');
+        // print('Entered into else where temp is < 20');
         emit(state.copyWith(apptheme: AppTheme.dark));
       }
     });

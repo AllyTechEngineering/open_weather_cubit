@@ -5,6 +5,7 @@ import 'package:open_weather_cubit/models/custom_error.dart';
 import 'package:open_weather_cubit/repositories/weather_repository.dart';
 
 part 'weather_state.dart';
+
 /// # WeatherCubit
 /// * https://pub.dev/documentation/bloc/latest/bloc/Cubit-class.html
 /// * https://pub.dev/documentation/bloc/latest/bloc/Cubit-class.html#instance-methods
@@ -36,7 +37,7 @@ class WeatherCubit extends Cubit<WeatherState> {
         status: WeatherStatus.error,
         error: e,
       ));
-      // print('state: $state');
+      print('state.error is: ${state.error}');
     }
   } //Future<void>fetchWeather
 } //class WeatherCubit
